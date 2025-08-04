@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptonAI - AI Crypto Earnings Bot</title>
+    
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '622844896911930');
+    fbq('track', 'PageView');
+    
+    function trackConversion() {
+        fbq('track', 'Lead');
+    }
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=622844896911930&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f5f5f5;
+            --accent: #f05d5e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(110, 69, 226, 0.6);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(to right, var(--light), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .secondary-button {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--secondary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .secondary-button:hover {
+            background: rgba(136, 211, 206, 0.1);
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 600px;
+            z-index: 1;
+            opacity: 0.8;
+        }
+        
+        .crypto-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, var(--secondary), var(--primary));
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-1000px) translateX(500px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Features */
+        .features {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 36px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(110, 69, 226, 0.2);
+            border-color: rgba(110, 69, 226, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .feature-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        /* Earnings Section */
+        .earnings {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(110, 69, 226, 0.1), rgba(136, 211, 206, 0.1));
+        }
+        
+        .earnings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .earnings-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .step {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            flex-grow: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .step-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .timeline {
+            position: absolute;
+            left: 25px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            z-index: 1;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            opacity: 0.7;
+            font-size: 14px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .cta-section p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 50px 0 20px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--light);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+        
+        /* Animations */
+        .animate-delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .animate-delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .animate-delay-3 {
+            animation-delay: 0.6s;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-image {
+                opacity: 0.3;
+                right: -200px;
+            }
+            
+            .hero h1 {
+                font-size: 42px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                display: none;
+            }
+            
+            .steps {
+                padding-left: 40px;
+            }
+            
+            .timeline {
+                left: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .earnings-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo animate__animated animate__fadeInLeft">CryptonAI</div>
+                <div class="nav-links animate__animated animate__fadeIn">
+                    <a href="#features">Features</a>
+                    <a href="#earnings">Earnings</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#testimonials">Results</a>
+                </div>
+                <a href="https://t.me/smartapp_ltd" class="cta-button animate__animated animate__fadeInRight" onclick="trackConversion()">Start Earning</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="crypto-animation" id="cryptoAnimation"></div>
+        <div class="container">
+            <div class="hero-content animate__animated animate__fadeInUp">
+                <h1>Automate Your Crypto Earnings</h1>
+                <p>Our AI-powered trading bot works 24/7 to generate passive income from cryptocurrency markets. Join thousands of users who are earning daily with our proven system.</p>
+                <div class="hero-buttons">
+                    <a href="https://t.me/smartapp_ltd" class="cta-button" onclick="trackConversion()">Start Earning Now</a>
+                    <a href="#how-it-works" class="secondary-button">See How It Works</a>
+                </div>
+            </div>
+            <img src="https://via.placeholder.com/600x400" alt="CryptonAI Dashboard" class="hero-image animate__animated animate__fadeInRight">
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title animate__animated animate__fadeIn">Why Choose Our System</h2>
+            <div class="features-grid">
+                <div class="feature-card animate__animated animate__fadeInUp">
+                    <div class="feature-icon">💰</div>
+                    <h3>Passive Income</h3>
+                    <p>Our bot works automatically 24/7, executing profitable trades while you sleep or focus on other activities.</p>
+                </div>
+                <div class="feature-card animate__animated animate__fadeInUp animate-delay-1">
+                    <div class="feature-icon">📈</div>
+                    <h3>Proven Results</h3>
+                    <p>Consistent daily earnings with an average return of 3-8% per day based on historical performance.</p>
+                </div>
+                <div class="feature-card animate__animated animate__fadeInUp animate-delay-2">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Smart AI</h3>
+                    <p>Advanced algorithms analyze market trends and execute trades at optimal moments for maximum profit.</p>
+                </div>
+                <div class="feature-card animate__animated animate__fadeInUp animate-delay-3">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Risk Management</h3>
+                    <p>Automated stop-loss and take-profit systems protect your capital while maximizing earnings.</p>
+                </div>
+                <div class="feature-card animate__animated animate__fadeInUp">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Setup</h3>
+                    <p>Get started in minutes with our simple setup process - no technical knowledge required.</p>
+                </div>
+                <div class="feature-card animate__animated animate__fadeInUp animate-delay-1">
+                    <div class="feature-icon">🌐</div>
+                    <h3>24/7 Support</h3>
+                    <p>Our team is always available to help you maximize your earnings with the system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Earnings Section -->
+    <section class="earnings" id="earnings">
+        <div class="container">
+            <div class="earnings-container animate__animated animate__fadeIn">
+                <h2 class="section-title">Real Earnings Potential</h2>
+                <p>See what our users are achieving daily with our automated trading system</p>
+                
+                <div class="earnings-stats">
+                    <div class="stat-item animate__animated animate__fadeInUp">
+                        <div class="stat-number">3-8%</div>
+                        <div class="stat-label">Daily ROI</div>
+                    </div>
+                    <div class="stat-item animate__animated animate__fadeInUp animate-delay-1">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Trading Activity</div>
+                    </div>
+                    <div class="stat-item animate__animated animate__fadeInUp animate-delay-2">
+                        <div class="stat-number">85%+</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+                
+                <a href="https://t.me/smartapp_ltd" class="cta-button" onclick="trackConversion()">Start Earning Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title animate__animated animate__fadeIn">How To Start Earning</h2>
+            <div class="steps">
+                <div class="timeline"></div>
+                <div class="step animate__animated animate__fadeInRight">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Join Our Community</h3>
+                        <p>Connect with us on Telegram to get started and access the bot setup instructions.</p>
+                    </div>
+                </div>
+                <div class="step animate__animated animate__fadeInRight animate-delay-1">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Fund Your Account</h3>
+                        <p>Deposit cryptocurrency to your exchange account (minimum $100 recommended).</p>
+                    </div>
+                </div>
+                <div class="step animate__animated animate__fadeInRight animate-delay-2">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Connect the Bot</h3>
+                        <p>Follow our simple guide to connect the AI bot to your exchange via API.</p>
+                    </div>
+                </div>
+                <div class="step animate__animated animate__fadeInRight animate-delay-3">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Start Earning</h3>
+                        <p>Activate the bot and watch your account grow with automated profitable trades.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title animate__animated animate__fadeIn">User Success Stories</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card animate__animated animate__fadeInUp">
+                    <div class="testimonial-text">
+                        "I was skeptical at first, but after the first week of consistent earnings, I increased my capital. Now I'm making $300-500 daily passively!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <h4>James D.</h4>
+                            <p>User since 2022</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate__animated animate__fadeInUp animate-delay-1">
+                    <div class="testimonial-text">
+                        "This bot changed my life. I quit my 9-5 job after 6 months when my earnings surpassed my salary. Now I travel while the bot works for me."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <h4>Sarah M.</h4>
+                            <p>User since 2021</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate__animated animate__fadeInUp animate-delay-2">
+                    <div class="testimonial-text">
+                        "As a complete beginner, I appreciated the simple setup. My $500 investment grew to $4,200 in just 3 months with the compounding feature."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RK</div>
+                        <div class="author-info">
+                            <h4>Robert K.</h4>
+                            <p>User since 2023</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container animate__animated animate__fadeIn">
+            <h2>Ready to Start Earning Automatically?</h2>
+            <p>Join our community of successful traders today and transform your financial future.</p>
+            <div class="cta-buttons">
+                <a href="https://t.me/smartapp_ltd" class="cta-button" onclick="trackConversion()">Get Started Now</a>
+                <a href="https://t.me/smartapp_ltd" class="secondary-button" onclick="trackConversion()">See More Proof</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CryptonAI</h3>
+                    <p>Automated cryptocurrency earnings powered by artificial intelligence.</p>
+                    <div class="social-links">
+                        <a href="https://t.me/smartapp_ltd" onclick="trackConversion()">📱</a>
+                        <a href="https://t.me/smartapp_ltd" onclick="trackConversion()">📘</a>
+                        <a href="https://t.me/smartapp_ltd" onclick="trackConversion()">🐦</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="https://t.me/smartapp_ltd" onclick="trackConversion()">Help Center</a></li>
+                        <li><a href="https://t.me/smartapp_ltd" onclick="trackConversion()">Contact Us</a></li>
+                        <li><a href="https://t.me/smartapp_ltd" onclick="trackConversion()">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 CryptonAI. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating crypto coins animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const animationContainer = document.getElementById('cryptoAnimation');
+            const coinsCount = 20;
+            
+            for (let i = 0; i < coinsCount; i++) {
+                const coin = document.createElement('div');
+                coin.classList.add('coin');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100; // Start below visible area
+                
+                // Random size
+                const size = Math.random() * 20 + 10;
+                
+                // Random animation duration
+                const duration = Math.random() * 10 + 10;
+                
+                // Random delay
+                const delay = Math.random() * 5;
+                
+                coin.style.left = `${posX}%`;
+                coin.style.top = `${posY}%`;
+                coin.style.width = `${size}px`;
+                coin.style.height = `${size}px`;
+                coin.style.animationDuration = `${duration}s`;
+                coin.style.animationDelay = `${delay}s`;
+                
+                animationContainer.appendChild(coin);
+            }
+            
+            // Animate elements when scrolling
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.animate__animated');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementPosition < windowHeight - 100) {
+                        const animationClass = element.classList.item(1); // Get the animation class
+                        element.classList.add(animationClass);
+                    }
+                });
+            };
+            
+            // Initial check
+            animateOnScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>
